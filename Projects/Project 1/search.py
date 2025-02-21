@@ -91,38 +91,29 @@ def depthFirstSearch(problem: SearchProblem) -> List[Directions]:
     """
     
     start = problem.getStartState()
-    if problem.isGoalState(start):
-        return []
-    
-    actions = []
     visited = set()
     
-    def dfs(current_state: tuple[int, int], path: list = None):
-        if path is None:
-            path = []
-            
-        visited.add(current_state)
-        if problem.isGoalState(current_state):
-            actions.extend(path)
-            return True
-        
-        for successor, action, stepCost in problem.getSuccessors(current_state):
-            if successor in visited:
-                continue
-            
-            path.append(action)
-            if dfs(successor, path):
-                return True
-            path.pop()
-        return False
+    fringe = util.Stack()
+    fringe.push((start, []))
     
-    dfs(start)
-    return actions
-            
+    while True:
+        if fringe.isEmpty():
+            return None
+        
+        node, path = fringe.pop()
+        if problem.isGoalState(node):
+            return path
+        
+        if node not in visited():
+            visited.add(node)
+            for successor, action, stepCost in problem.getSuccessors(node):
+                fringe.push((successor, path + [action]))
 
 def breadthFirstSearch(problem: SearchProblem) -> List[Directions]:
     """Search the shallowest nodes in the search tree first."""
-    "*** YOUR CODE HERE ***"
+    
+    
+    
     util.raiseNotDefined()
 
 def uniformCostSearch(problem: SearchProblem) -> List[Directions]:
