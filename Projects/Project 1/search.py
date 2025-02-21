@@ -104,7 +104,7 @@ def depthFirstSearch(problem: SearchProblem) -> List[Directions]:
         if problem.isGoalState(node):
             return path
         
-        if node not in visited():
+        if node not in visited:
             visited.add(node)
             for successor, action, stepCost in problem.getSuccessors(node):
                 fringe.push((successor, path + [action]))
@@ -125,10 +125,13 @@ def breadthFirstSearch(problem: SearchProblem) -> List[Directions]:
         node, path = fringe.pop()
         if problem.isGoalState(node):
             return path
-        
-        for successor, action, stepCost in problem.getSuccessors(node):
-            fringe.push((successor, path + [action]))
-    
+     
+        if node not in visited:
+            visited.add(node)
+            
+            for successor, action, stepCost in problem.getSuccessors(node):
+                fringe.push((successor, path + [action]))
+           
     util.raiseNotDefined()
 
 def uniformCostSearch(problem: SearchProblem) -> List[Directions]:
