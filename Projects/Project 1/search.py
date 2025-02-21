@@ -94,8 +94,8 @@ def depthFirstSearch(problem: SearchProblem) -> List[Directions]:
     if problem.isGoalState(start):
         return []
     
-    visited = set()
     actions = []
+    visited = set()
     
     def dfs(current_state: tuple[int, int], path: list = None):
         if path is None:
@@ -118,6 +118,7 @@ def depthFirstSearch(problem: SearchProblem) -> List[Directions]:
     
     dfs(start)
     return actions
+            
 
 def breadthFirstSearch(problem: SearchProblem) -> List[Directions]:
     """Search the shallowest nodes in the search tree first."""
