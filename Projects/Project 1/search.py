@@ -139,22 +139,22 @@ def uniformCostSearch(problem: SearchProblem) -> List[Directions]:
     
     start = problem.getStartState()
     visited = set()
-    frontier = util.PriorityQueue()
-    frontier.push((start, [], 0), 0)
-    visited.add(start)
     
-    while not frontier.isEmpty():
-        state, actions, cost = frontier.pop()
+    fringe = util.PriorityQueue()
+    fringe.push((start, [], 0), 0)
+    
+    while True:
+        if fringe.isEmpty():
+            return None
+        
+        state, actions, cost = fringe.pop()
         if problem.isGoalState(state):
             return actions
-        
         if state not in visited:
             visited.add(state)
             
-            for nextState, nextAction, nextCost in problem.getSuccessors(state):
-                if nextState not in visited:
-                    frontier.push((nextState, actions + [nextAction], cost + nextCost), cost + nextCost)
-    
+            for successor, action, stepCost in problem.getSuccessors(state):
+                fringe.push((successor, actions + [action], cost + stepCost), cost + stepCost)
     util.raiseNotDefined()
 
 def nullHeuristic(state, problem=None) -> float:
