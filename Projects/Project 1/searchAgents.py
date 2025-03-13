@@ -295,14 +295,18 @@ class CornersProblem(search.SearchProblem):
         Returns the start state (in your state space, not the full Pacman state
         space)
         """
-        "*** YOUR CODE HERE ***"
+        
+        return (self.startingPosition, self.corners)
+        
         util.raiseNotDefined()
 
     def isGoalState(self, state: Any):
         """
         Returns whether this search state is a goal state of the problem.
         """
-        "*** YOUR CODE HERE ***"
+        
+        return len(state[1]) == 0
+        
         util.raiseNotDefined()
 
     def getSuccessors(self, state: Any):
@@ -325,8 +329,17 @@ class CornersProblem(search.SearchProblem):
             #   nextx, nexty = int(x + dx), int(y + dy)
             #   hitsWall = self.walls[nextx][nexty]
 
-            "*** YOUR CODE HERE ***"
-
+            currentPosition, corners = state
+            x, y = currentPosition
+            dx, dy = Actions.directionToVector(action)
+            nextx, nexty = int(x + dx), int(y + dy)
+            hitsWall = self.walls[nextx][nexty]
+            
+            if not hitsWall:
+                nextPosition = (nextx, nexty)
+                newCorners = tuple(corner for corner in corners if corner != nextPosition)
+                successors.append(((nextPosition, newCorners), action, 1))
+            
         self._expanded += 1 # DO NOT CHANGE
         return successors
 
@@ -361,7 +374,18 @@ def cornersHeuristic(state: Any, problem: CornersProblem):
     corners = problem.corners # These are the corner coordinates
     walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
 
-    "*** YOUR CODE HERE ***"
+    currentPosition, corners = state
+    unvisitedCorners = list(corners)
+    heuristic = 0
+    
+    while not unvisitedCorners.isEmpty():
+        distances = [(util.manhattanDistance(currentPosition, corner), corner) for corner in unvisitedCorners]
+        minDistance, closestCorner = min(distances)
+        heuristic += minDistance
+        unvisitedCorners.remove(closestCorner)
+    
+    return heuristic       
+    
     return 0 # Default to trivial solution
 
 
