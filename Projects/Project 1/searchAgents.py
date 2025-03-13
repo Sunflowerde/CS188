@@ -378,11 +378,12 @@ def cornersHeuristic(state: Any, problem: CornersProblem):
     unvisitedCorners = list(corners)
     heuristic = 0
     
-    while not unvisitedCorners.isEmpty():
+    while len(unvisitedCorners) != 0:
         distances = [(util.manhattanDistance(currentPosition, corner), corner) for corner in unvisitedCorners]
         minDistance, closestCorner = min(distances)
         heuristic += minDistance
         unvisitedCorners.remove(closestCorner)
+        currentPosition = closestCorner
     
     return heuristic       
     
